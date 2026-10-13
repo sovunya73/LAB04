@@ -47,6 +47,8 @@
         public static string CelsiusToFahrenheit(double celsius)
         {
             // Реализовать метод для решения задачи
+            return $"{celsius}C = {((celsius * 1.8) + 32):F1}F";
+            
             throw new NotImplementedException();
         }
 
