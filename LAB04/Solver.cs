@@ -1,4 +1,6 @@
-﻿namespace LAB04
+﻿using System.Runtime.InteropServices;
+
+namespace LAB04
 {
     /// <summary>
     /// Класс Solver содержит решения задач лабораторной работы.
@@ -24,7 +26,8 @@
         /// </example>
         public static string IntroduceYourself(string name, int age)
         {
-            // Реализовать метод для решения задачи
+            string formattedName = char.ToUpper(name[0]) + name.Substring(1).ToLower();
+            return $"Hello! My name is {formattedName} and i am {age} years old.";
             throw new NotImplementedException();
         }
 
@@ -48,8 +51,8 @@
         {
             // Реализовать метод для решения задачи
             return $"{celsius}C = {((celsius * 1.8) + 32):F1}F";
-            
             throw new NotImplementedException();
+
         }
 
         /// <summary>
@@ -63,7 +66,9 @@
         /// </example>
         public static string CalculateBMI(double heightCm, double weightKg)
         {
-            // Реализовать метод для решения задачи
+             double heightMeters = heightCm / 100.0;
+             double bmi = weightKg / (heightMeters * heightMeters);
+             return $"Рост: {heightCm} см, Вес: {weightKg} кг, ИМТ = {bmi:F1}";
             throw new NotImplementedException();
         }
 
@@ -108,7 +113,8 @@
         /// </example>
         public static string Average(double a, double b, double c)
         {
-            // Реализовать метод для решения задачи
+           double avg = (a + b + c) / 3.0;
+           return $"Среднее арифметическое чисел {a}, {b} и {c} = {avg:F2}";
             throw new NotImplementedException();
         }
 
@@ -161,7 +167,23 @@
         /// </example>
         public static string GetTriangleType(double a, double b, double c)
         {
-            // Реализовать метод для решения задачи
+            string TriangleType;
+            if (a + b <= c || a + c <= b || b + c <= a)
+            {
+                TriangleType = "не существует";
+            } else if (a == b && b == c)
+            {
+                TriangleType = "равносторонний";
+            } else if (a == b || b == c || a == c)
+            {
+                TriangleType = "равнобедренный";
+            } else
+            {
+                TriangleType = "разносторонний";
+            }
+            
+            return $"Треугольник со сторонами {a}, {b}, {c} - {TriangleType}";
+
             throw new NotImplementedException();
         }
 
@@ -207,7 +229,24 @@
         /// </example>
         public static string GetTimeOfDay(int hour)
         {
-            // Реализовать метод для решения задачи
+           string timeOfDay;
+           if (hour < 0 || hour > 23)
+            {
+                timeOfDay = "Не существует";
+            } else if (hour >= 6 && hour <= 11)
+            {
+                timeOfDay = "Утро";
+            } else if (hour >= 12 && hour <= 16)
+            {
+                timeOfDay = "День";
+            } else if (hour >= 17 && hour <= 23)
+            {
+                timeOfDay = "Вечер";
+            } else
+            {
+                timeOfDay = "Ночь";
+            }
+            return $"{hour} час - {timeOfDay}";
             throw new NotImplementedException();
         }
 
@@ -258,7 +297,19 @@
         /// </example>
         public static string ReverseNumber(int number)
         {
-            // Реализовать метод для решения задачи
+            int sign = number < 0 ? -1 : 1;
+            int temp = Math.Abs(number);
+            int reversed = 0;
+
+            while (temp > 0)
+            {
+                int remainder = temp % 10;
+                reversed = (reversed * 10) + remainder;
+                temp /= 10;
+            }
+            reversed *= sign;
+            return $"Перевёрнутое число: {reversed}";
+
             throw new NotImplementedException();
         }
 
@@ -306,7 +357,20 @@
         /// </example>
         public static string AverageArray(int[] numbers)
         {
-            // Реализовать метод для решения задачи
+            if (numbers == null || numbers.Length == 0)
+            {
+                return "Среднее значение массива = 0.00";
+            }
+
+            double sum = 0;
+            
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                sum += numbers[i];
+            }
+
+            double average = sum / numbers.Length;
+            return $"Среднее значение массива = {average:0.00}";
             throw new NotImplementedException();
         }
 
@@ -360,7 +424,41 @@
         /// </example>
         public static string SecondLargest(int[] array)
         {
-            // Реализовать метод для решения задачи
+            if (array == null || array.Length < 2)if (array == null || array.Length < 2)
+            {
+                return "В массиве должно находиться минимум 2 элемента";
+            }
+
+            int max1 = int.MinValue;
+            int max2 = int.MinValue;
+
+            int max2Index = -1;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                int current = array[i];
+                if (current > max1)
+                {
+                    max2 = max1;
+                    max2Index = i - 1;
+                    max1 = current;
+                } else if (current > max2 || (current == max1 && max2 == int.MinValue))
+                {
+                    max2 = current;
+                    max2Index = i;
+                }
+            }
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == max2)
+                {
+                    if (max1 == max2 && i == 0) continue;
+                    max2Index = i;
+                    break;
+                }
+            }
+            return $"Второй по величине элемент: {max2} (индекс {max2Index})";
             throw new NotImplementedException();
         }
 
@@ -405,7 +503,29 @@
         /// </example>
         public static string SplitArray(int[] array)
         {
-            // Реализовать метод для решения задачи
+            if (array == null || array.Length == 0)
+            {
+                return "Массив не может быть пустым";
+            }
+
+            string positives = "";
+            string negatives = "";
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                int current = array[i];
+
+                if (current > 0)
+                {
+                    positives += current + " ";
+                } else if (current < 0)
+                {
+                    negatives += current + " ";
+                }
+            }
+            positives = positives.TrimEnd();
+            negatives = negatives.TrimEnd();
+            return $"Положительные: {positives}. Отрицательные: {negatives}";
             throw new NotImplementedException();
         }
 
